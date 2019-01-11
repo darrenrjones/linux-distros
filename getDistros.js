@@ -33,9 +33,7 @@ axios.get('https://distrowatch.com/index.php?dataspan=1')
       // console.log(d81_100);
 
       console.log(distroList);
-
-
-
-
     }
-  }, (error) => console.log('error: ', err))
+  })
+  .catch(err => console.log('There was a problem: ', err)
+  )
