@@ -1,0 +1,15 @@
+{
+  "name": "linuxdistros",
+  "version": "1.0.0",
+  "description": "Retrieve top distros from distrowatch",
+  "main": "getDistros.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Darren Jones",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2"
+  }
+}
