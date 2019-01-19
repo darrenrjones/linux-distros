@@ -35,7 +35,7 @@ exports.getDistros = (req,res) => {
 
         console.log(distroList);
       }
-      res.send(distroList[0])
+      res.render('layout', { distro: distroList[0]});
     })
     .catch(err => console.log('There was a problem: ', err)
     )
