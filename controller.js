@@ -1,55 +1,38 @@
 let axios = require('axios');
 let cheerio = require('cheerio');
-// let fs = require('fs');
+const getBracketRange = require('./getBracketValue');
 
 exports.getDistros = (req, res) => {
   const distroList = [];
-  const rootURL = 'https://distrowatch.com/table.php?distribution=';
-  let d0_20;
-  let d21_40;
-  let d41_60;
-  let d61_80;
-  let d81_100;
+  const bracketRange = getBracketRange(Math.floor(Math.random() * 100 + 1));
+  const randomIndex = Math.floor(Math.random() * 20);  
 
   return axios.get('https://distrowatch.com/index.php?dataspan=1')
     .then((response) => {
-      if (response.status === 200) {        
+      if (response.status === 200) {
         const html = response.data;
         const $ = cheerio.load(html);
 
+        //find distro list and for each one create {distro, query, rank}
         $('.phr2').each(function (i, element) {
-          var a = $(this).children();
-          // console.log(a.text());
-          // distroList.push(a);
+          let a = $(this).children();
           const distro = a.text();
-
-          const href = a['0'].attribs.href;
+          const href = a['0'].attribs.href; //ex: "mx?frphr">
           const query = href.substr(0, href.indexOf('?'));
-          distroList.push({distro , query});
+          distroList.push({ distro, query, rank: i + 1 });
         });
 
-        d0_20 = distroList.slice(0, 20);
-        // console.log(d0_20);
-        d21_40 = distroList.slice(20, 40);
-        // console.log(d21_40);      
-        d41_60 = distroList.slice(40, 60);
-        // console.log(d41_60);
-        d61_80 = distroList.slice(60, 80);
-        // console.log(d61_80);
-        d81_100 = distroList.slice(80, 100);
-        // console.log(d81_100);
-
-        console.log(distroList);
+        distroToInstall = distroList.slice(bracketRange.min, bracketRange.max)[randomIndex];
         
-
-        // const href = distroList[1]['0'].attribs.href;
-        // console.log(href); //ex mx?frphr        
-
-        // const query = href.substr(0, href.indexOf('?'));
-        // console.log(query);
+        console.log('bracket Range:', bracketRange.min, '-', bracketRange.max);   
       }
-      res.render('layout', { distro: distroList[0].distro, url: rootURL + distroList[0].query  });
+
+      res.render('layout', {
+        distro: distroToInstall.distro,
+        url: 'https://distrowatch.com/table.php?distribution=' + distroToInstall.query,
+        rank: distroToInstall.rank
+      });
+
     })
-    .catch(err => console.log('There was a problem: ', err)
-    )
+    .catch(err => console.log('There was a problem: ', err))
 }
