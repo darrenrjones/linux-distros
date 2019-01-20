@@ -27,14 +27,30 @@ npm install
 
 in terminal at root run:
 
-node getDistros.js
+npm start
 
-This will print an array of the top 100 distros from the past 7 days as searched on [Distrowatch](https://distrowatch.com)
+Terminal should show: 
+
+```
+> linuxdistros@1.0.0 start /home/{yourPCName}/LinuxDistros
+> nodemon app.js
+
+[nodemon] 1.18.9
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching: *.*
+[nodemon] starting `node app.js`
+listening on 8008
+```
+
+Navigate in browser to : http://localhost:8008
+
+This will display a Linux Distribution from the top 100 distros from the past 7 days as searched on [Distrowatch](https://distrowatch.com)
 
 ## Built With
-
+- [Express](https://expressjs.com/)
 - [Cheerio](https://www.npmjs.com/package/cheerio)
 - [Axios](https://www.npmjs.com/package/axios)
+- [Pug](https://pugjs.org/api/getting-started.html)
 
 ## License
 
