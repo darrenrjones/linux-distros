@@ -6,10 +6,12 @@ exports.getDistros = (req, res) => {
   const distroList = [];
   const bracketRange = getBracketRange(Math.floor(Math.random() * 100 + 1));
   const randomIndex = Math.floor(Math.random() * 20);  
+  console.time();
 
   return axios.get('https://distrowatch.com/index.php?dataspan=1')
     .then((response) => {
       if (response.status === 200) {
+
         const html = response.data;
         const $ = cheerio.load(html);
 
@@ -32,6 +34,7 @@ exports.getDistros = (req, res) => {
         url: 'https://distrowatch.com/table.php?distribution=' + distroToInstall.query,
         rank: distroToInstall.rank
       });
+      console.timeEnd();
 
     })
     .catch(err => console.log('There was a problem: ', err))
