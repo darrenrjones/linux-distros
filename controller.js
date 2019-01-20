@@ -23,9 +23,9 @@ exports.getDistros = (req, res) => {
           // distroList.push(a);
           const distro = a.text();
 
-          const href = a['0'].attribs.href;
+          const href = a['0'].attribs.href; //ex: "mx?frphr">
           const query = href.substr(0, href.indexOf('?'));
-          distroList.push({distro , query});
+          distroList.push({distro , query, rank: i + 1});
         });
 
         d0_20 = distroList.slice(0, 20);

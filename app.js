@@ -1,6 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const path = require('path');
+const router = express.Router();
+const controller = require('./controller');
 
 const app = express();
 
@@ -8,11 +9,6 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-const routes = require('./routes');
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use('/', routes )
+app.use('/', router.get('/', controller.getDistros));
 
 app.listen(8008, () => console.log('listening on 8008'))
