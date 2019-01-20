@@ -2,8 +2,9 @@ let axios = require('axios');
 let cheerio = require('cheerio');
 // let fs = require('fs');
 
-exports.getDistros = (req,res) => {
+exports.getDistros = (req, res) => {
   const distroList = [];
+  const rootURL = 'https://distrowatch.com/table.php?distribution=';
   let d0_20;
   let d21_40;
   let d41_60;
@@ -12,16 +13,21 @@ exports.getDistros = (req,res) => {
 
   return axios.get('https://distrowatch.com/index.php?dataspan=1')
     .then((response) => {
-      if (response.status === 200) {
-
+      if (response.status === 200) {        
         const html = response.data;
         const $ = cheerio.load(html);
 
         $('.phr2').each(function (i, element) {
           var a = $(this).children();
           // console.log(a.text());
-          distroList.push(a.text());
+          // distroList.push(a);
+          const distro = a.text();
+
+          const href = a['0'].attribs.href;
+          const query = href.substr(0, href.indexOf('?'));
+          distroList.push({distro , query});
         });
+
         d0_20 = distroList.slice(0, 20);
         // console.log(d0_20);
         d21_40 = distroList.slice(20, 40);
@@ -34,8 +40,15 @@ exports.getDistros = (req,res) => {
         // console.log(d81_100);
 
         console.log(distroList);
+        
+
+        // const href = distroList[1]['0'].attribs.href;
+        // console.log(href); //ex mx?frphr        
+
+        // const query = href.substr(0, href.indexOf('?'));
+        // console.log(query);
       }
-      res.send(distroList[0])
+      res.render('layout', { distro: distroList[0].distro, url: rootURL + distroList[0].query  });
     })
     .catch(err => console.log('There was a problem: ', err)
     )
